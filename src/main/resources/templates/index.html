@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="PT-BR" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>-PooWeb-</title>
+</head>
+
+<body>
+    <!-- Formulário de Cadastro (Aparece apenas se 'todo.id' for nulo/vazio) -->
+    <form method="post" action="/create" th:if="${todo.id == null}">
+        <h3>Nova Tarefa</h3>
+        <label>Tarefa:</label>
+        <input type="text" name="title" />
+
+        <label>Prazo:</label>
+        <input type="date" name="deadLine" />
+
+        <button type="submit">Salvar</button>
+    </form>
+
+    <!-- Formulário de Edição (Aparece apenas se 'todo.id' estiver preenchido) -->
+    <form method="post" action="/edit" th:if="${todo.id != null}">
+        <h3>Editar Tarefa</h3>
+        <input type="hidden" name="id" th:value="${todo.id}" />
+
+        <label>Tarefa:</label>
+        <input type="text" name="title" th:value="${todo.title}" />
+
+        <label>Prazo:</label>
+        <input type="date" name="deadLine" th:value="${todo.deadLine}" />
+
+        <button type="submit">Atualizar</button>
+        <a href="/">Cancelar</a>
+    </form>
+
+    <br>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Criada em</th>
+                <th>Prazo</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr th:each="t : ${todos}">
+                <td th:text="${t.title}"></td>
+                <td th:text="${t.createdAt}"></td>
+                <td th:text="${t.deadLine}"></td>
+                <td>
+                    <!-- Link para carregar a tarefa no formulário de edição -->
+                    <a th:href="@{/edit/{id}(id=${t.id})}">Editar</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br>
+
+</body>
+
+</html>
