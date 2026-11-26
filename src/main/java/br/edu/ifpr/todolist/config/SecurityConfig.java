@@ -2,7 +2,6 @@ package br.edu.ifpr.todolist.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
@@ -19,7 +18,9 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers(HttpMethod.GET, "/api/todos").authenticated()
+                // Protege TODOS os endpoints da API (GET, POST, PUT, DELETE, PATCH)
+                .requestMatchers("/api/**").authenticated()
+                // Libera as rotas da interface web (Thymeleaf) e recursos estáticos
                 .anyRequest().permitAll()
             )
             .httpBasic(Customizer.withDefaults());
